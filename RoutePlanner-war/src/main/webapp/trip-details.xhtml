@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core"
+        >
+
+
+<h:head>
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Joti+One"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Belleza"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One"/>
+
+    <link href="/maps/documentation/javascript/examples/default.css" rel="stylesheet"/>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var map;
+
+        var therapLocation = new google.maps.LatLng(23.79123, 90.40126);
+
+        var rendererOptions = {
+            polylineOptions: {
+                strokeColor:'Tomato',
+                strokeWeight: 4
+            },
+            suppressMarkers: true
+        }
+
+        var styles = [{
+                "stylers": [
+                    {"hue": "#00bbff"},
+                    {"saturation": 98},
+                    {"lightness": 6},
+                    {"gamma": 0.79},
+                    {"visibility": "on"}
+                ]
+        }]
+
+        function initialize() {
+
+            directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+
+            var mapOptions = {
+                zoom:16,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                center: therapLocation
+            }
+
+            map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            map.setOptions({styles: styles});
+            directionsDisplay.setMap(map);
+
+            var passengerInfoElements = document.getElementById('passengers').getElementsByTagName("input");
+
+            for (var i = 0; i &lt; passengerInfoElements.length; i++) {
+                var info = passengerInfoElements[i].getAttribute("value").split(";location:");
+                var passengerName = info[0].substr(5);
+                var address = info[1];
+
+                setPassengerMarker(map,address,passengerName);
+            }
+
+            var transportLocationElement = document.getElementById('transportLocationAddress').getElementsByTagName("input");
+            var address = transportLocationElement[0].getAttribute("value");
+
+            setOfficePointMarker(map);
+
+            setTransportLocationMarker(map,address);
+
+            google.maps.event.addListener(map, 'click', function(event) {
+                map.setZoom(12);
+                map.setCenter(event.latLng);
+            });
+        }
+
+        function calculateRoute() {
+
+            var startLocation = therapLocation;
+            var endLocation = therapLocation;
+            var wayPoints = [];
+            var wayPointElements = document.getElementById('waypoints').getElementsByTagName("input");
+
+            for (var i = 0; i &lt; wayPointElements.length; i++) {
+
+                setWayPointMarker(map,wayPointElements[i].getAttribute("value"));
+                wayPoints.push({
+                        location:wayPointElements[i].getAttribute("value"),
+                        stopover:true
+                });
+            }
+
+            var request = {
+                origin:startLocation,
+                destination:endLocation,
+                waypoints: wayPoints,
+                provideRouteAlternatives: false,
+                travelMode: google.maps.DirectionsTravelMode.DRIVING
+            };
+
+            directionsService.route(request, function(response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+        }
+
+        function setPassengerMarker(map, address, name) {
+
+            var geocoder = new google.maps.Geocoder;
+
+            geocoder.geocode({'address':address},function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var location = results[0].geometry.location.toString().split(", ");
+                    var lat = parseFloat(location[0].substr(1)) + 0.000025;
+                    var lng = parseFloat(location[1].substr(0,location[1].length-1)) + (Math.random()%5)*0.00002;
+
+                    var passengerLocation = new google.maps.LatLng(lat, lng);
+                    var image = 'http://farm4.staticflickr.com/3819/10263702624_18ed3c8df1_o.gif';
+                    var marker = new google.maps.Marker({
+                        position: passengerLocation,
+                        map: map,
+                        icon: image,
+                        title: name
+                    });
+
+                    addMouseClickEvent(marker);
+                }
+            });
+        }
+
+        function setWayPointMarker(map, address) {
+            var geocoder = new google.maps.Geocoder;
+            geocoder.geocode({'address':address},function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+
+                    var image = 'http://farm6.staticflickr.com/5465/10263815245_d6678a3695_o.gif';
+                    var marker = new google.maps.Marker({
+                        position: results[0].geometry.location,
+                        map: map,
+                        icon: image,
+                        title: address
+                    });
+
+                    addMouseClickEvent(marker);
+                }
+            });
+        }
+
+        function setTransportLocationMarker(map, address) {
+
+            var geocoder = new google.maps.Geocoder;
+            var image = 'http://farm8.staticflickr.com/7435/10264034223_910dec3ea5_o.png';
+
+            if(address.toString() == 'start' || address.toString() == 'end') {
+
+                var marker = new google.maps.Marker({
+                    position: therapLocation,
+                    map: map,
+                    icon: image,
+                    title: address
+                });
+
+                addMouseClickEvent(marker);
+            }
+
+            else {
+
+                geocoder.geocode({'address':address},function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var marker = new google.maps.Marker({
+                            position: results[0].geometry.location,
+                            map: map,
+                            icon: image,
+                            title: address
+                        });
+
+                        addMouseClickEvent(marker);
+                    }
+                });
+            }
+
+        }
+
+        function setOfficePointMarker(map) {
+
+            var image = 'http://farm6.staticflickr.com/5443/10264092703_6478e1dabe_o.png';
+
+            var marker = new google.maps.Marker({
+                position: therapLocation,
+                map: map,
+                icon: image,
+                title: 'Therap Services, LLC'
+            });
+
+            addMouseClickEvent(marker);
+        }
+
+        function addMouseClickEvent(marker) {
+            google.maps.event.addListener(marker, 'click', function() {
+                map.setZoom(32);
+                map.setCenter(marker.getPosition());
+            });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+</h:head>
+
+<h:body onload="calculateRoute()" styleClass="margin">
+
+    <f:event type="preRenderView" listener="#{tripAction.checkHasATripSet}" />
+
+    <h:form>
+
+        <ul class="menuBar">
+
+            <li>
+                <h:commandButton styleClass="logoutButton" action="#{logoutAction.logout}" value="Logout"/>
+            </li>
+
+            <li>
+                <h:commandButton styleClass="menuItem" action="home" value="Home"/>
+            </li>
+
+            <li>
+                <h:commandButton styleClass="menuItem" action="profile" value="Profile"/>
+            </li>
+
+            <li>
+                <h:commandButton rendered="#{sessionTracker.admin}" styleClass="menuItem" action="management" value="Management"/>
+            </li>
+
+            <li>
+                <h:commandButton rendered="#{sessionTracker.admin}" styleClass="menuItem" action="add-trip" value="Add Trip"/>
+            </li>
+
+        </ul>
+
+    </h:form>
+
+    <div id="waypoints">
+        <c:forEach items="#{tripAction.wayPoints}" var="location">
+            <input type="hidden" value="#{location}"/>
+        </c:forEach>
+    </div>
+
+    <div id="passengers">
+        <c:forEach items="#{tripAction.passengerInfo}" var="info">
+            <input type="hidden" value="#{info}"/>
+        </c:forEach>
+    </div>
+
+    <div id="transportLocationAddress">
+        <input type="hidden" value="#{tripAction.transportLocationAddress}"/>
+    </div>
+
+    <div>
+        <span class="titlePage"> Trip Id: <h:outputText value="#{tripAction.tripId}"/> </span>  <br/>  <br/>
+    </div>
+
+    <div id="map-canvas" class="mapArea"/>
+
+    <div>
+
+        <h:panelGrid rendered="#{sessionTracker.currentUser.userName eq tripAction.transport.driverName}" columns="2">
+
+            <h:form>
+
+                <h:panelGrid columns="1">
+
+                    <h:outputText styleClass="pageHeader" value="Update Trip Status:"/>
+
+                    <h:selectOneMenu styleClass="formSelectMenu" id="tripStatus" value="#{tripActionHelper.targetTripStatus}" required="true" label="Trip Status">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItem itemLabel="Running" itemValue="Running" />
+                        <f:selectItem itemLabel="Finished" itemValue="Finished" />
+                    </h:selectOneMenu>
+
+                    <h:message for="tripStatus" style="color:red; font-size: 12px;"/>
+
+                    <h:commandButton styleClass="pageButton" action="#{tripActionHelper.updateTripStatus}" value="Update">
+                        <f:setPropertyActionListener target="#{tripActionHelper.targetTripId}" value="#{tripAction.tripId}" />
+                    </h:commandButton>
+
+                </h:panelGrid>
+
+            </h:form>
+
+            <h:form>
+
+                <h:panelGrid columns="1">
+
+                    <h:outputText styleClass="pageHeader" value="Update Transport Location:"/>
+
+                    <h:selectOneMenu styleClass="formSelectMenu" id="transportLocation" value="#{tripActionHelper.targetTripTransportLocation}" required="true" label="Transport Location">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+
+                        <f:selectItem itemLabel="Start" itemValue="start" />
+
+                        <c:forEach items="#{tripAction.wayPoints}" var="location">
+                            <f:selectItem itemLabel="#{location}" itemValue="#{location}" />
+                        </c:forEach>
+
+                        <f:selectItem itemLabel="End" itemValue="end" />
+
+                    </h:selectOneMenu>
+
+                    <h:message for="tripStatus" style="color:red; font-size: 12px;"/>
+
+                    <h:commandButton styleClass="pageButton" action="#{tripActionHelper.updateTripTransportLocation}" value="Update">
+                        <f:setPropertyActionListener target="#{tripActionHelper.targetTripId}" value="#{tripAction.tripId}" />
+                    </h:commandButton>
+
+                </h:panelGrid>
+
+            </h:form>
+
+        </h:panelGrid>
+
+        <br/>
+
+        <div>
+            <span class="pageHeader"> Transport:</span>
+            <h:outputText styleClass="textArea" value="#{tripAction.transport.transportName}" />
+        </div>  <br/>
+
+        <div>
+            <span class="pageHeader"> Driver:</span>
+            <h:outputText styleClass="textArea" value="#{tripAction.transport.driverName}" />
+        </div>  <br/>
+
+        <div>
+            <span class="pageHeader"> Transport Capacity:</span>
+            <h:outputText styleClass="textArea" value="#{tripAction.transport.capacity}" />
+        </div> <br/>
+
+
+        <div>
+            <span class="pageHeader">Way Points:</span> <br/>
+
+            <ul>
+
+                <h:outputText styleClass="textArea" value="No Way Points" rendered="#{empty tripAction.wayPoints}"/>
+
+                <c:forEach items="#{tripAction.wayPoints}" var="location">
+                    <li> <h:outputText styleClass="textArea" value="#{location}"/> </li>
+                </c:forEach>
+
+            </ul>
+        </div>
+
+        <div>
+            <span class="pageHeader">Passengers:</span> <br/>
+
+            <ul>
+
+                <h:outputText styleClass="textArea" value="No Passenger" rendered="#{empty tripAction.passengers}"/>
+
+                <c:forEach items="#{tripAction.passengers}" var="passengerName">
+                    <li>
+
+                        <h:form>
+
+                            <h:outputText styleClass="textArea" value="#{passengerName}"/>
+
+                            <h:commandButton styleClass="notgoingButton" action="#{tripActionHelper.updateTrip}" value="Set Not Going" rendered="#{passengerName eq sessionTracker.currentUser.userName}">
+                                <f:setPropertyActionListener target="#{tripActionHelper.notGoingUser}" value="#{passengerName}" />
+                                <f:setPropertyActionListener target="#{tripActionHelper.targetTripId}" value="#{tripAction.tripId}" />
+                            </h:commandButton>
+
+                        </h:form>
+
+                    </li>
+                </c:forEach>
+
+            </ul>
+        </div>
+
+        <div>
+            <span class="pageHeader">Waiting Passengers:</span> <br/>
+
+            <ul>
+
+                <h:outputText styleClass="textArea" value="No Waiting Passenger" rendered="#{empty tripAction.waitingPassengers}"/>
+
+                <c:forEach items="#{tripAction.waitingPassengers}" var="waitingPassengerName">
+                    <li> <h:outputText styleClass="textArea" value="#{waitingPassengerName}"/> </li>
+                </c:forEach>
+
+            </ul>
+        </div>
+
+    </div>
+
+    <div>
+        <h:outputText styleClass="copyRight" value="©2013 All Rights Reserved. | Designed and Developed by Saad Bin Kader"/>
+    </div>
+
+</h:body>
+
+</html>

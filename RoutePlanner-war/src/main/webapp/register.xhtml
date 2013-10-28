@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Joti+One"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Belleza"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One"/>
+</h:head>
+
+<h:body styleClass="margin">
+
+    <f:event type="preRenderView" listener="#{sessionTracker.hasUserSession}" />
+
+    <ul class="menuBar">
+        <li>
+            <h:link class="menuItem" value="SignIn" outcome="login"/>
+        </li>
+    </ul>
+
+    <h:outputText styleClass="titlePage" value="User Registration"/>
+
+    <h:form styleClass="form">
+
+        <h:panelGrid columns="1">
+
+            <h:outputLabel styleClass="formTitle" for="userName" value="User Name: " />
+
+            <h:inputText styleClass="formInputField" id="userName" value="#{registerAction.userName}" required="true" label="User">
+                <f:validateLength for="userName" minimum="3" maximum="30" />
+                <f:validator for="userName" validatorId="UserNameValidator"/>
+            </h:inputText>
+
+            <h:outputText value="#{registerAction.userNameErrorMessage}" style="color:red; font-size: 12px;"/>
+
+            <h:message for="userName" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="password" value="Password: " />
+
+            <h:inputSecret styleClass="formInputField" id="password" value="#{registerAction.password}" required="true" label="Password">
+                <f:validateLength for="password" minimum="3" maximum="30" />
+                <f:validator for="password" validatorId="PasswordValidator"/>
+            </h:inputSecret>
+
+            <h:message for="password" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="reTypedPassword" value="Retype Password: " />
+
+            <h:inputSecret styleClass="formInputField" id="reTypedPassword" value="#{registerAction.reTypedPassword}" required="true" label="ReTypedPassword">
+                <f:validateLength for="reTypedPassword" minimum="3" maximum="30" />
+                <f:validator for="reTypedPassword" validatorId="PasswordValidator"/>
+            </h:inputSecret>
+
+            <h:message for="reTypedPassword" style="color:red; font-size: 12px;"/>
+
+            <h:outputText value="#{registerAction.passwordErrorMessage}" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel for="userType" value="User Type: " />
+
+            <h:selectOneMenu styleClass="formSelectMenu" id="userType" value="#{registerAction.userType}" required="true" label="UserType">
+                <f:selectItem itemLabel="Select" itemValue="" />
+                <f:selectItem itemLabel="Driver" itemValue="driver" />
+                <f:selectItem itemLabel="Passenger" itemValue="passenger" />
+            </h:selectOneMenu>
+
+            <h:message for="userType" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="locationID" value="Location: " />
+
+            <h:selectOneMenu styleClass="formSelectMenu" id="locationID" value="#{registerAction.locationID}" required="true" label="LocationID">
+                <f:selectItem itemLabel="Select" itemValue="" />
+                <f:selectItems value="#{locationAction.locationAddressIdMap}" />
+            </h:selectOneMenu>
+
+            <h:message for="locationID" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="firstName" value="First Name: " />
+
+            <h:inputText styleClass="formInputField" id="firstName" value="#{registerAction.firstName}" required="true" label="FirstName">
+                <f:validateLength for="firstName" minimum="3" maximum="30" />
+                <f:validator for="firstName" validatorId="InputFieldValidator"/>
+            </h:inputText>
+
+            <h:message for="firstName" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="lastName" value="Last Name: " />
+
+            <h:inputText styleClass="formInputField" id="lastName" value="#{registerAction.lastName}" required="true" label="LastName">
+                <f:validateLength for="lastName" minimum="3" maximum="30" />
+                <f:validator for="lastName" validatorId="InputFieldValidator"/>
+            </h:inputText>
+
+            <h:message for="lastName" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="email" value="Email: " />
+
+            <h:inputText styleClass="formInputField" id="email" value="#{registerAction.email}" required="true" label="Email">
+                <f:validateLength for="email" minimum="3" maximum="30" />
+                <f:validator for="email" validatorId="EmailValidator"/>
+            </h:inputText>
+
+            <h:message for="email" style="color:red; font-size: 12px;"/>
+
+            <h:outputLabel styleClass="formTitle" for="designation" value="Designation: " />
+
+            <h:selectOneMenu styleClass="formSelectMenu" id="designation" value="#{registerAction.designation}" required="true" label="Designation">
+                <f:selectItem itemLabel="Select" itemValue="" />
+                <f:selectItem itemLabel="Driver" itemValue="driver" />
+                <f:selectItems value="#{designationAction.designationTitleTitleMap}" />
+            </h:selectOneMenu>
+
+            <h:message for="designation" style="color:red; font-size: 12px;"/>
+
+            <h:commandButton styleClass="formButton" action="#{registerAction.register}" value="Register"/>
+
+        </h:panelGrid>
+
+    </h:form>
+
+    <h:outputText styleClass="copyRight" value="©2013 All Rights Reserved. | Designed and Developed by Saad Bin Kader"/>
+
+</h:body>
+
+</html>

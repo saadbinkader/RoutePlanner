@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Add Trip</title>
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/common/template/layout.xhtml">
+
+        <ui:define name="content">
+
+            <f:event type="preRenderView" listener="#{sessionTracker.hasAdminRole}" />
+
+            <h:form styleClass="form">
+
+                <h:panelGrid>
+
+                    <f:facet name="header">
+                        <h:outputText styleClass="formHeader" value="Create A Trip"/>
+                    </f:facet>
+
+                    <h:outputLabel styleClass="formTitle" for="tripTransportId" value="Transport: " />
+
+                    <h:selectOneMenu styleClass="formSelectMenu" id="tripTransportId" value="#{tripActionHelper.tripTransportId}" required="true" label="Transport">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItems value="#{transportAction.transportNameIdMap}" />
+                    </h:selectOneMenu>
+
+                    <h:message for="tripTransportId" style="color:red; font-size: 12px;"/>
+
+                    <h:outputLabel styleClass="formTitle" for="routeName" value="Route: " />
+
+                    <h:selectOneMenu styleClass="formSelectMenu" id="routeName" value="#{tripActionHelper.route}" required="true" label="Route">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItems value="#{routeAction.routeRouteMap}" />
+                    </h:selectOneMenu>
+
+                    <h:message for="routeName" style="color:red; font-size: 12px;"/>
+
+                    <h:outputLabel styleClass="formTitle" for="tripTime" value="Trip Time: " />
+
+                    <p:calendar id="tripTime" value="#{tripActionHelper.tripTime}" pattern="MM/dd/yyyy HH:mm" rendered="true" label="Trip Time"/> <br/>
+
+                    <h:message for="tripTime" style="color:red; font-size: 12px;"/>
+
+                    <f:facet name="footer">
+                        <h:commandButton styleClass="formButton" action="#{tripActionHelper.createTrip}" value="Create"/>
+                    </f:facet>
+
+                </h:panelGrid>
+
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
+
+</h:body>
+
+</html>

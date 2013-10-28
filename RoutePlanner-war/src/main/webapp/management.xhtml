@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <title>Route Management</title>
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/common/template/layout.xhtml">
+
+        <ui:define name="content">
+
+        <f:event type="preRenderView" listener="#{sessionTracker.hasAdminRole}" />
+
+            <p:tabView style="border-style: none;
+                              background-color: white;
+                              font-family: Belleza, serif;">
+
+                <p:tab id="locations"
+                       title="Locations"
+                       titleStyle="width: 110px;
+                                   text-align: center;
+                                   border-left: 8px solid #00CC66;
+                                   border-radius: 0px 0px 30px 0px;">
+
+                    <h:form styleClass="form">
+
+                        <h:panelGrid columns="1">
+
+                            <f:facet name="header">
+                                <h:outputText styleClass="formHeader" value="Add Location"/>
+                            </f:facet>
+
+                            <h:outputLabel styleClass="formTitle" for="locationAddress" value="Address: " />
+
+                            <h:inputText styleClass="formInputField" id="locationAddress" value="#{locationAction.locationAddress}" required="true" label="Address">
+                                <f:validateLength for="locationAddress" minimum="3" maximum="50" />
+                            </h:inputText>
+
+                            <h:message for="locationAddress" style="color:red; font-size: 12px;"/>
+
+                            <h:outputLabel styleClass="formTitle" for="routeName" value="Route: " />
+
+                            <h:selectOneMenu styleClass="formSelectMenu" id="routeName" value="#{locationAction.route}" required="true" label="Route">
+                                <f:selectItem itemLabel="Select" itemValue="" />
+                                <f:selectItems value="#{routeAction.routeRouteMap}" />
+                            </h:selectOneMenu>
+
+                            <h:message for="routeName" style="color:red; font-size: 12px;"/>
+
+                            <f:facet name="footer">
+                                <h:commandButton styleClass="formButton" action="#{locationAction.addLocation}" value="Add"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+                <p:tab id="route"
+                       title="Route"
+                       titleStyle="width: 110px;
+                                   text-align: center;
+                                   border-left: 8px solid #00CC66;
+                                   border-radius: 0px 0px 30px 0px;">
+
+                    <h:form styleClass="form">
+
+                        <h:panelGrid columns="1">
+
+                            <f:facet name="header">
+                                <h:outputText styleClass="formHeader" value="Add Route"/>
+                            </f:facet>
+
+                            <h:outputLabel styleClass="formTitle" for="routeName" value="Route: " />
+
+                            <h:inputText styleClass="formInputField" id="routeName" value="#{routeAction.routeName}" required="true" label="Route Name">
+                                <f:validateLength for="routeName" minimum="3" maximum="50" />
+                                <f:validator for="routeName" validatorId="InputFieldValidator"/>
+                            </h:inputText>
+
+                            <h:message for="routeName" style="color:red; font-size: 12px;"/>
+
+                            <f:facet name="footer">
+                                <h:commandButton styleClass="formButton" action="#{routeAction.addRoute}" value="Add"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+                <p:tab id="transport"
+                       title="Transport"
+                       titleStyle="width: 110px;
+                                   text-align: center;
+                                   border-left: 8px solid #00CC66;
+                                   border-radius: 0px 0px 30px 0px;">
+
+                    <h:form styleClass="form">
+
+                        <h:panelGrid columns="1">
+
+                            <f:facet name="header">
+                                <h:outputText styleClass="formHeader" value="Add Transport"/>
+                            </f:facet>
+
+                            <h:outputLabel styleClass="formTitle" for="transportName" value="Transport Name: " />
+
+                            <h:inputText styleClass="formInputField" id="transportName" value="#{transportAction.transportName}" required="true" label="Transport Name">
+                                <f:validateLength for="transportName" minimum="3" maximum="50" />
+                                <f:validator for="transportName" validatorId="InputFieldValidator"/>
+                            </h:inputText>
+
+                            <h:message for="transportName" style="color:red; font-size: 12px;"/>
+
+                            <h:outputLabel styleClass="formTitle" for="transportCapacity" value="Capacity: " />
+
+                            <h:inputText styleClass="formInputField" id="transportCapacity" value="#{transportAction.capacity}" required="true" label="Transport Capacity">
+                                <f:validator validatorId="NumberValidator" for="transportCapacity"/>
+                            </h:inputText>
+
+                            <h:message for="transportCapacity" style="color:red; font-size: 12px;"/>
+
+                            <h:outputLabel styleClass="formTitle" for="driverName" value="Driver: " />
+
+                            <h:selectOneMenu styleClass="formSelectMenu" id="driverName" value="#{transportAction.driverName}" required="true" label="Driver Name">
+                                <f:selectItem itemLabel="Select" itemValue="" />
+                                <f:selectItems value="#{transportAction.driverNameNameMap}" />
+                            </h:selectOneMenu>
+
+                            <h:message for="driverName" style="color:red; font-size: 12px;"/>
+
+                            <f:facet name="footer">
+                                <h:commandButton styleClass="formButton" action="#{transportAction.addTransport}" value="Add"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+                <p:tab id="user"
+                       title="User"
+                       titleStyle="width: 110px;
+                                   text-align: center;
+                                   border-left: 8px solid #00CC66;
+                                   border-radius: 0px 0px 30px 0px;">
+
+                    <h:panelGrid columns="1">
+
+                        <h:outputText styleClass="titlePage" value="Users:"/>
+
+                        <table class="userTable">
+                            <tr class="userTableThRow">
+                                <td class="userTableTh"><span class="tableHeader">UserName</span></td>
+                                <td class="userTableTh"><span class="tableHeader">Role</span></td>
+                            </tr>
+
+                            <c:forEach items="#{userRoleAction.users}" var="user">
+
+                                <tr class="userTableTr">
+                                    <td class="userTableTd">#{user.userName}</td>
+                                    <td class="userTableTd">#{user.userType}</td>
+
+                                    <h:form rendered="#{user.userType ne 'driver'}">
+                                        <td class="userTableTd">
+                                            <h:selectOneMenu styleClass="userRoleSelectMenu" value="#{userRoleAction.userType}" required="true" label="Designation">
+                                                <f:selectItem itemLabel="Select" itemValue="" />
+                                                <f:selectItem itemLabel="Admin" itemValue="admin" />
+                                                <f:selectItem itemLabel="Passenger" itemValue="passenger" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                        <td class="userTableTd">
+                                            <h:commandButton styleClass="userRoleUpdateButton" action="#{userRoleAction.updateRole}" value="Update">
+                                                <f:setPropertyActionListener target="#{userRoleAction.userName}" value="#{user.userName}" />
+                                            </h:commandButton>
+                                        </td>
+                                    </h:form>
+
+                                    <c:if test="${user.userType eq 'driver'}">
+                                        <td class="userTableTd">
+                                            <br/>
+                                        </td>
+                                        <td class="userTableTd">
+                                            <br/>
+                                        </td>
+                                    </c:if>
+                                </tr>
+
+                            </c:forEach>
+
+                        </table>
+
+                    </h:panelGrid>
+
+                </p:tab>
+
+                <p:tab id="designation"
+                       title="Designation"
+                       titleStyle="width: 130px;
+                                   text-align: center;
+                                   border-left: 8px solid #00CC66;
+                                   border-radius: 0px 0px 30px 0px;">
+
+                    <h:form styleClass="form">
+
+                        <h:panelGrid>
+
+                            <f:facet name="header">
+                                <h:outputText styleClass="formHeader" value="Add Designation"/>
+                            </f:facet>
+
+                            <h:outputLabel styleClass="formTitle" for="designationTitle" value="Title: " />
+
+                            <h:inputText styleClass="formInputField" id="designationTitle" value="#{designationAction.designationTitle}" required="true" label="Title">
+                                <f:validateLength for="designationTitle" minimum="3" maximum="50" />
+                                <f:validator for="designationTitle" validatorId="InputFieldValidator"/>
+                            </h:inputText>
+
+                            <h:message for="designationTitle" style="color:red; font-size: 12px;"/>
+
+                            <h:outputLabel styleClass="formTitle" for="designationRank" value="Rank: " />
+
+                            <h:inputText styleClass="formInputField" id="designationRank" value="#{designationAction.designationRank}" required="true" label="Rank">
+                                <f:validator for="designationRank" validatorId="NumberValidator"/>
+                            </h:inputText>
+
+                            <h:message for="designationRank" style="color:red; font-size: 12px;"/>
+
+                            <f:facet name="footer">
+                                <h:commandButton styleClass="formButton" action="#{designationAction.addDesignation}" value="Add"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+
+        </ui:define>
+
+    </ui:composition>
+
+</h:body>
+
+</html>

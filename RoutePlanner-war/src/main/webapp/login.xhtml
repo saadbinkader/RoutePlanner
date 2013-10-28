@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Joti+One"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Belleza"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One"/>
+</h:head>
+
+<h:body styleClass="margin">
+
+    <f:event type="preRenderView" listener="#{sessionTracker.hasUserSession}" />
+
+    <h:outputText styleClass="titleMain" value="Route Planner"/>
+
+            <h:form styleClass="form">
+
+                <h:panelGrid columns="1">
+
+                    <f:facet name="header">
+                        <h:outputText styleClass="formHeader" value="Sign In"/>
+                    </f:facet>
+
+                    <h:outputLabel styleClass="formTitle" for="userName" value="User: " />
+
+                    <h:inputText styleClass="formInputField" id="userName" value="#{loginAction.userName}" required="true" label="User">
+                        <f:validateLength for="userName" minimum="3" maximum="30" />
+                        <f:validator for="password" validatorId="UserNameValidator"/>
+                    </h:inputText>
+
+                    <h:message for="userName" style="color:red; font-size: 12px;"/>
+
+                    <h:outputLabel styleClass="formTitle" for="password" value="Password: " />
+
+                    <h:inputSecret styleClass="formInputField" id="password" value="#{loginAction.password}" required="true" label="Password">
+                        <f:validateLength for="password" minimum="3" maximum="30" />
+                        <f:validator for="password" validatorId="PasswordValidator"/>
+                    </h:inputSecret>
+
+                    <h:message for="password" style="color:red; font-size: 12px;"/>
+
+                    <f:facet name="footer">
+                        <h:commandButton styleClass="formButton" action="#{loginAction.login}" value="Login"/>
+                    </f:facet>
+
+                </h:panelGrid>
+
+                <h:outputText value="#{loginAction.message}" style="color:red; font-size: 12px;"/> <br/>
+
+                <h:link styleClass="registerTitle" value="or Register" outcome="register"/>
+
+            </h:form>
+
+    <h:outputText styleClass="copyRight" value="©2013 All Rights Reserved. | Designed and Developed by Saad Bin Kader"/>
+
+</h:body>
+
+</html>

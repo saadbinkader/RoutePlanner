@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+<h:head>
+
+    <title>Route Planner</title>
+
+    <h:outputStylesheet library="css" name="style.css"  />
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Joti+One"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Belleza"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One"/>
+
+</h:head>
+
+<h:body styleClass="margin">
+
+    <h:panelGrid rendered="#{sessionTracker.loggedIn}" columns="1">
+
+        <ui:insert name="header">
+            <ui:include src="/common/template/header.xhtml" />
+        </ui:insert>
+
+        <ui:insert name="content" >
+            <ui:include src="/common/template/content.xhtml" />
+        </ui:insert>
+
+        <ui:insert name="footer" >
+            <ui:include src="/common/template/footer.xhtml" />
+        </ui:insert>
+
+    </h:panelGrid>
+
+    <h:form rendered="#{!sessionTracker.loggedIn}">
+        <h:panelGrid columns="1" styleClass="form">
+            <f:facet name="header">
+                <h:outputText styleClass="formHeader" value="Warning"/>
+            </f:facet>
+            <h:outputText styleClass="textArea" value="You have to Login to See This Page!!" style="color:red"/>
+            <f:facet name="footer">
+                <h:commandButton styleClass="formButton" action="login" value="Login"/>
+            </f:facet>
+        </h:panelGrid>
+    </h:form>
+
+</h:body>
+
+</html>

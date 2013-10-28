@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Joti+One"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Belleza"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One"/>
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/common/template/layout.xhtml">
+
+        <ui:define name="content">
+
+            <h:outputText styleClass="titlePage" value="Trips"/>
+
+            <table class="tripTable">
+                <tr class="tripTableThRow">
+                    <td class="tripTableTh"><span class="tableHeader">ID</span></td>
+                    <td class="tripTableTh"><span class="tableHeader">Status</span></td>
+                    <td class="tripTableTh"><span class="tableHeader">Time</span></td>
+                    <td class="tripTableTh"><span class="tableHeader">Route</span></td>
+                </tr>
+
+                <c:forEach items="#{tripAction.trips}" var="trip">
+
+                    <tr class="tripTableTr">
+                        <td class="tripTableTd">#{trip.tripId}</td>
+                        <td class="tripTableTd">#{trip.status}</td>
+                        <td class="tripTableTd">#{trip.startTimestamp}</td>
+                        <td class="tripTableTd">#{trip.route}</td>
+                        <td>
+                            <h:form>
+                                <h:commandButton styleClass="detailsButton" action="#{tripAction.showTripDetails}" value="Show Details">
+                                    <f:setPropertyActionListener target="#{tripAction.tripId}" value="#{trip.tripId}" />
+                                    <f:setPropertyActionListener target="#{tripAction.transportId}" value="#{trip.transportId}" />
+                                </h:commandButton>
+                            </h:form>
+                        </td>
+                    </tr>
+
+                </c:forEach>
+
+            </table>
+
+        </ui:define>
+
+    </ui:composition>
+
+</h:body>
+
+</html>

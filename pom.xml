@@ -1,0 +1,202 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>RoutePlanner</groupId>
+  <artifactId>RoutePlanner</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+
+  <url>http://maven.apache.org</url>
+
+  <name>RoutePlanner Maven Webapp</name>
+
+  <properties>
+      <arquillian.version>1.0.0.CR1</arquillian.version>
+  </properties>
+
+  <modules>
+      <module>RoutePlanner-app</module>
+      <module>RoutePlanner-ejb</module>
+      <module>RoutePlanner-war</module>
+  </modules>
+
+
+  <dependencyManagement>
+
+      <dependencies>
+
+          <dependency>
+              <groupId>javax</groupId>
+              <artifactId>javaee-api</artifactId>
+              <version>6.0</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.glassfish.main.ejb</groupId>
+              <artifactId>javax.ejb</artifactId>
+              <version>3.1.2.2</version>
+          </dependency>
+
+          <!--<Testing>-->
+
+          <dependency>
+              <groupId>junit</groupId>
+              <artifactId>junit</artifactId>
+              <version>4.11</version>
+          </dependency>
+
+          <!--<Arquillian>-->
+
+          <dependency>
+              <groupId>org.jboss.arquillian.junit</groupId>
+              <artifactId>arquillian-junit-container</artifactId>
+              <version>${arquillian.version}</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.jboss.arquillian.container</groupId>
+              <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+              <version>${arquillian.version}</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.glassfish.extras</groupId>
+              <artifactId>glassfish-embedded-all</artifactId>
+              <version>3.1.1</version>
+          </dependency>
+
+          <!--<JFS>-->
+
+          <dependency>
+              <groupId>javax.faces</groupId>
+              <artifactId>jsf-api</artifactId>
+              <version>2.1</version>
+          </dependency>
+
+          <dependency>
+              <groupId>javax.faces</groupId>
+              <artifactId>javax.faces-api</artifactId>
+              <version>2.1</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.primefaces</groupId>
+              <artifactId>primefaces</artifactId>
+              <version>3.5</version>
+          </dependency>
+
+          <!--<Hibernate>-->
+
+          <dependency>
+              <groupId>org.hibernate</groupId>
+              <artifactId>hibernate-entitymanager</artifactId>
+              <version>3.6.9.Final</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.hibernate.javax.persistence</groupId>
+              <artifactId>hibernate-jpa-2.0-api</artifactId>
+              <version>1.0.0.Final</version>
+          </dependency>
+
+          <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>5.1.23</version>
+          </dependency>
+
+          <dependency>
+              <groupId>commons-logging</groupId>
+              <artifactId>commons-logging</artifactId>
+              <version>1.1.1</version>
+          </dependency>
+
+          <dependency>
+              <groupId>org.hibernate</groupId>
+              <artifactId>hibernate-jpamodelgen</artifactId>
+              <version>1.2.0.Final</version>
+              <scope>provided</scope>
+          </dependency>
+
+          <!--<log4j>-->
+
+          <dependency>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+              <version>1.2.16</version>
+          </dependency>
+
+
+          <!--<Modules>-->
+
+          <dependency>
+              <groupId>RoutePlanner</groupId>
+              <artifactId>RoutePlanner-ejb</artifactId>
+              <version>1.0-SNAPSHOT</version>
+              <type>ejb</type>
+          </dependency>
+
+          <dependency>
+              <groupId>RoutePlanner</groupId>
+              <artifactId>RoutePlanner-war</artifactId>
+              <version>1.0-SNAPSHOT</version>
+              <type>war</type>
+          </dependency>
+
+      </dependencies>
+
+  </dependencyManagement>
+
+  <repositories>
+      <repository>
+          <id>prime-repo</id>
+          <name>PrimeFaces Maven Repository</name>
+          <url>http://repository.primefaces.org</url>
+          <layout>default</layout>
+      </repository>
+  </repositories>
+
+  <build>
+
+      <finalName>RoutePlanner</finalName>
+
+      <pluginManagement>
+
+          <plugins>
+
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-ejb-plugin</artifactId>
+                  <version>2.1</version>
+              </plugin>
+
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-ear-plugin</artifactId>
+                  <version>2.7</version>
+              </plugin>
+
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <version>3.1</version>
+              </plugin>
+
+              <plugin>
+                  <groupId>org.glassfish.maven.plugin</groupId>
+                  <artifactId>maven-glassfish-plugin</artifactId>
+                  <version>2.1</version>
+              </plugin>
+
+          </plugins>
+
+      </pluginManagement>
+
+  </build>
+
+</project>

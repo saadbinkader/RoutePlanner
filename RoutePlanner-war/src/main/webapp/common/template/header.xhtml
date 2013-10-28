@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+        <ui:composition>
+
+            <h:form>
+
+                <ul class="menuBar">
+
+                    <li>
+                        <h:commandButton styleClass="logoutButton" action="#{logoutAction.logout}" value="Logout"/>
+                    </li>
+
+                    <li>
+                        <h:commandButton styleClass="menuItem" action="home" value="Home"/>
+                    </li>
+
+                    <li>
+                        <h:commandButton styleClass="menuItem" action="profile" value="Profile"/>
+                    </li>
+
+                    <li>
+                        <h:commandButton rendered="#{sessionTracker.admin}" styleClass="menuItem" action="management" value="Management"/>
+                    </li>
+
+                    <li>
+                        <h:commandButton rendered="#{sessionTracker.admin}" styleClass="menuItem" action="add-trip" value="Add Trip"/>
+                    </li>
+
+                </ul>
+
+            </h:form>
+
+        </ui:composition>
+</h:body>
+
+</html>

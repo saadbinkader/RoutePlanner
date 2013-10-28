@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <link rel="stylesheet" type="text/css" href="resources/css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Joti+One"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Belleza"/>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Poiret+One"/>
+</h:head>
+
+<h:body styleClass="margin">
+
+    <ui:composition template="/common/template/layout.xhtml">
+
+        <ui:define name="content">
+
+            <h:outputText styleClass="titlePage" value="Profile"/>
+
+            <h:form styleClass="form">
+
+                <h:panelGrid columns="1">
+
+                    <h:outputText value="#{profileAction.updateMessage}" style="color:#00CC66; font-size: 13px;"/> <br/>
+
+                    <h:outputLabel styleClass="pageHeader" for="userName" value="User Name: " />
+
+                    <h:outputText styleClass="textArea" id="userName" value="#{sessionTracker.currentUser.userName}"/> <br/>
+
+                    <h:outputLabel styleClass="pageHeader" for="name" value="Name: " />
+
+                    <h:outputText styleClass="textArea" id="name" value="#{sessionTracker.currentUser.userProfile.firstName} #{sessionTracker.currentUser.userProfile.lastName}"/> <br/>
+
+                    <h:outputLabel styleClass="pageHeader" for="email" value="Email: " />
+
+                    <h:outputText styleClass="textArea" id="email" value="#{sessionTracker.currentUser.userProfile.email}"/> <br/>
+
+                    <h:outputLabel styleClass="pageHeader" value="Designation: " />
+
+                    <h:outputText styleClass="textArea" value="#{sessionTracker.currentUser.userProfile.designationTitle}"/> <br/>
+
+                    <h:outputText styleClass="pageHeader" value="Update Password: " />
+
+                    <h:outputLabel styleClass="formTitle" for="newPassword" value="New Password: " />
+
+                    <h:inputSecret styleClass="formInputField" id="newPassword" value="#{profileAction.newPassword}" required="false">
+                        <f:validator for="newPassword" validatorId="PasswordValidator"/>
+                    </h:inputSecret>
+
+                    <h:message for="newPassword" style="color:red; font-size: 12px;"/>
+
+                    <h:outputLabel styleClass="formTitle" for="reTypedNewPassword" value="Retype Password: " />
+
+                    <h:inputSecret styleClass="formInputField" id="reTypedNewPassword" value="#{profileAction.reTypedNewPassword}" required="false">
+                        <f:validator for="reTypedNewPassword" validatorId="PasswordValidator"/>
+                    </h:inputSecret>
+
+                    <h:message for="reTypedNewPassword" style="color:red; font-size: 12px;"/>
+
+                    <h:outputText value="#{profileAction.newPasswordInfoMessage}" style="color:red; font-size: 12px;"/>  <br/>
+
+                    <h:outputText styleClass="pageHeader" value="Update Location: " />
+
+                    <h:outputLabel styleClass="formTitle" for="locationID" value="Location: " />
+
+                    <h:selectOneMenu styleClass="formSelectMenu" id="locationID" value="#{profileAction.locationId}" required="false">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItems value="#{locationAction.locationAddressIdMap}" />
+                    </h:selectOneMenu> <br/>
+
+                    <h:outputText styleClass="pageHeader" value="Update Designation: " />
+
+                    <h:outputLabel styleClass="formTitle" for="designation" value="Designation: " />
+
+                    <h:selectOneMenu styleClass="formSelectMenu" id="designation" value="#{profileAction.designation}" required="false">
+                        <f:selectItem itemLabel="Select" itemValue="" />
+                        <f:selectItems value="#{designationAction.designationTitleTitleMap}" />
+                    </h:selectOneMenu> <br/>
+
+                    <h:outputLabel styleClass="formTitle" for="password" value="Enter Old Password: " />
+
+                    <h:inputSecret styleClass="formInputField" id="password" value="#{profileAction.password}" required="true" label="Password">
+                        <f:validateLength for="password" minimum="3" maximum="30"/>
+                        <f:validator for="password" validatorId="PasswordValidator"/>
+                    </h:inputSecret>
+
+                    <h:message for="password" style="color:red; font-size: 12px;"/>
+
+                    <h:outputText value="#{profileAction.oldPasswordErrorMessage}" style="color:red; font-size: 12px;"/>
+
+                    <h:commandButton styleClass="formButton" action="#{profileAction.updateProfile}" value="Update Profile"/>
+
+                </h:panelGrid>
+
+            </h:form>
+
+        </ui:define>
+
+    </ui:composition>
+
+</h:body>
+
+</html>
